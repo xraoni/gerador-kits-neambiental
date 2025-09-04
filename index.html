@@ -8,6 +8,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
+    <!-- Botão para abrir menu em celular -->
+<button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
+
     <div class="container">
         <!-- SIDEBAR: Apenas controle, sem interferir no preview -->
         <div class="sidebar">
@@ -146,5 +149,12 @@
     </div>
 
     <script src="script.js"></script>
+
+    <script>
+function toggleMenu() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.toggle('open');
+}
+</script>
 </body>
 </html>
