@@ -6,18 +6,20 @@
 }
 
 body {
-    background: #f0f0f0;
-    line-height: 1.4;
+    background: #f0f0f2;
+    line-height: 1.5;
 }
 
+/* CONTAINER PRINCIPAL */
 .container {
     display: flex;
     min-height: 100vh;
     max-width: 1920px;
     margin: 0 auto;
+    position: relative;
 }
 
-/* SIDEBAR */
+/* SIDEBAR - Menu de controle */
 .sidebar {
     width: 320px;
     background: #f8f9fa;
@@ -25,8 +27,11 @@ body {
     border-right: 1px solid #dee2e6;
     overflow-y: auto;
     height: 100vh;
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: transform 0.3s ease;
 }
 
 .sidebar h2 {
@@ -35,12 +40,10 @@ body {
     font-size: 1.3em;
     text-align: center;
     font-weight: bold;
-    text-transform: uppercase;
 }
 
-/* Botões */
 .btn {
-    padding: 12px 15px;
+    padding: 10px 15px;
     margin: 8px 0;
     border: none;
     border-radius: 4px;
@@ -48,6 +51,7 @@ body {
     font-size: 14px;
     width: 100%;
     font-weight: bold;
+    text-transform: none;
 }
 
 .btn-primary { background: #007bff; color: white; }
@@ -57,7 +61,7 @@ body {
 .btn-add { background: #28a745; color: white; }
 .btn-remove { background: #6c757d; color: white; }
 
-/* Seções */
+/* Seções do sidebar */
 .save-section, .product-controls {
     margin-bottom: 20px;
     padding: 15px;
@@ -70,7 +74,6 @@ body {
     color: #333;
     font-size: 16px;
     font-weight: bold;
-    text-transform: uppercase;
 }
 
 .save-section label, .form-group label {
@@ -90,12 +93,7 @@ body {
     font-size: 14px;
 }
 
-.form-group textarea {
-    height: 80px;
-    resize: vertical;
-}
-
-/* Lista de produtos no sidebar */
+/* Lista de produtos */
 #busca-produto {
     width: 100%;
     padding: 8px;
@@ -144,31 +142,15 @@ body {
     color: #333;
 }
 
-#lista-kits-salvos {
-    margin-top: 10px;
-    font-size: 12px;
-}
-
-#lista-kits-salvos .kit-item {
-    display: flex;
-    justify-content: space-between;
-    margin: 5px 0;
-    font-size: 12px;
-}
-
-#lista-kits-salvos button {
-    padding: 2px 5px;
-    margin-left: 5px;
-    font-size: 11px;
-}
-
-/* ÁREA PRINCIPAL */
+/* ÁREA PRINCIPAL - Orçamento */
 .main-content {
     flex: 1;
     padding: 20px;
     background: white;
-    margin: 10px;
+    margin-left: 320px; /* Para não sobrepor o sidebar */
+    margin: 10px 10px 10px 330px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    min-width: 0; /* Evita overflow horizontal */
 }
 
 .header h1 {
@@ -207,29 +189,42 @@ body {
     font-size: 14px;
 }
 
+/* TABELA RESPONSIVA */
 table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
     font-size: 12px;
+    overflow-x: auto; /* Scroll horizontal se necessário */
+    display: block;
+}
+
+table thead {
+    background: #f0f0f0;
+}
+
+table th, table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
 }
 
 table th {
+    position: sticky;
+    top: 0;
     background: #f0f0f0;
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
 }
 
 table td {
-    padding: 8px;
-    border: 1px solid #ddd;
     vertical-align: top;
+    word-wrap: break-word;
 }
 
 table img {
     max-width: 60px;
     height: auto;
+    border: 1px solid #eee;
+    border-radius: 4px;
 }
 
 table input[type="number"] {
@@ -278,7 +273,8 @@ table input[type="number"] {
     background: white;
     margin: 5% auto;
     padding: 20px;
-    width: 60%;
+    width: 90%;
+    max-width: 600px;
     border-radius: 8px;
     max-height: 80vh;
     overflow-y: auto;
@@ -308,35 +304,72 @@ table input[type="number"] {
     color: white;
 }
 
-.form-group {
-    margin-bottom: 15px;
+/* RESPONSIVIDADE */
+@media (max-width: 900px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-left: 10px !important;
+        width: calc(100% - 20px);
+    }
+    
+    /* Botão para abrir menu no celular */
+    .menu-toggle {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        z-index: 1100;
+        font-size: 14px;
+    }
 }
 
-/* Lista de produtos no modal de remoção */
-#lista-produtos-kit {
-    margin: 10px 0;
+@media (max-width: 600px) {
+    .header h1 {
+        font-size: 20px;
+    }
+    
+    table {
+        font-size: 11px;
+    }
+    
+    table th, table td {
+        padding: 6px;
+    }
+    
+    table img {
+        max-width: 50px;
+    }
+    
+    .total {
+        font-size: 16px;
+    }
+    
+    .enzilimp-section {
+        font-size: 11px;
+    }
 }
 
-.produto-kit-item {
-    padding: 8px;
-    margin: 5px 0;
-    background: #f8f9fa;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.produto-kit-item:hover {
-    background: #e9ecef;
-}
-
+/* Impressão */
 @media print {
-    .sidebar, .modal {
+    .sidebar, .modal, .menu-toggle {
         display: none !important;
     }
     
     .main-content {
         margin: 0;
         box-shadow: none;
+        width: 100%;
     }
 }
