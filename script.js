@@ -7,7 +7,7 @@ const produtos = [
         diluicoes: "1:250 (10 litros)",
         custoLitro: 2.50,
         preco: 25.00,
-        imagem: "imagens/cápsula multiuso S citronela.png"
+        imagem: "imagens/capsula-multiuso-citronela.png.png"
     },
     {
         id: "NE003",
@@ -16,7 +16,7 @@ const produtos = [
         diluicoes: "Manutencao 1:50",
         custoLitro: 0.88,
         preco: 45.00,
-        imagem: "imagens/Neopan Oxy.png"
+        imagem: "imagens/neopan-oxy.png"
     },
     {
         id: "NE005",
@@ -25,7 +25,7 @@ const produtos = [
         diluicoes: "Manutencao 1:50",
         custoLitro: 0.70,
         preco: 35.00,
-        imagem: "imagens/Desengordurante SO.png"
+        imagem: "imagens/desengordurante-so.png"
     },
     {
         id: "NE006",
@@ -34,7 +34,7 @@ const produtos = [
         diluicoes: "40 ml para cada carga de 16kg de roupa",
         custoLitro: 0.16,
         preco: 65.00,
-        imagem: "imagens/Natural Laundry 2x1.png"
+        imagem: "imagens/natural-laundry-2x1.png"
     },
     {
         id: "NE007",
@@ -43,7 +43,7 @@ const produtos = [
         diluicoes: "Media 20g a cada 100 refeicoes",
         custoLitro: 3.00,
         preco: 450.00,
-        imagem: "imagens/Enzilimp 3Kg.png"
+        imagem: "imagens/enzilimp-3kg.png"
     }
 ];
 
@@ -310,4 +310,5 @@ window.onclick = function(event) {
 // Atualizar título do kit
 document.getElementById('nome-kit').addEventListener('input', function() {
     document.getElementById('titulo-kit').textContent = this.value.toUpperCase();
+
 });
