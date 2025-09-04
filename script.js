@@ -7,7 +7,7 @@ const produtos = [
         diluicoes: "1:250 (10 litros)",
         custoLitro: 2.50,
         preco: 25.00,
-        imagem: "imagens/capsula-multiuso-citronela.png.png"
+        imagem: "imagens/capsula-multiuso-citronela.png"
     },
     {
         id: "NE003",
@@ -312,3 +312,4 @@ document.getElementById('nome-kit').addEventListener('input', function() {
     document.getElementById('titulo-kit').textContent = this.value.toUpperCase();
 
 });
+
