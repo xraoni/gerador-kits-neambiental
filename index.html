@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Kits NE Ambiental</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- SIDEBAR: Apenas controle, sem interferir no preview -->
+        <div class="sidebar">
+            <h2>GERENCIADOR DE KITS</h2>
+            
+            <!-- Ações Principais -->
+            <div class="actions-section">
+                <button onclick="resetarKit()" class="btn btn-danger">Novo Kit</button>
+                <button onclick="exportarPDF()" class="btn btn-success">Gerar PDF</button>
+            </div>
+
+            <!-- Gerenciamento de Kits -->
+            <div class="save-section">
+                <h3>GERENCIAR KITS</h3>
+                <label>Nome do Kit:</label>
+                <input type="text" id="nome-kit" value="Start 1" placeholder="Ex: Start 1, Profissional">
+                <button onclick="salvarKit()" class="btn btn-primary">Salvar Kit</button>
+                <button onclick="carregarListaKits()" class="btn btn-warning">Carregar Kit Salvo</button>
+                <div id="lista-kits-salvos"></div>
+            </div>
+
+            <!-- Adicionar/Remover Produtos -->
+            <div class="product-controls">
+                <h3>PRODUTOS</h3>
+                <button onclick="abrirModalNovoProduto()" class="btn btn-add">+ Adicionar Produto</button>
+                <button onclick="abrirModalRemoverProduto()" class="btn btn-remove">🗑️ Remover Produto</button>
+                
+                <div style="margin-top: 10px;">
+                    <input type="text" id="busca-produto" placeholder="Buscar produto..." onkeyup="filtrarProdutos()">
+                    <div id="lista-produtos"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ÁREA PRINCIPAL: Visualização idêntica ao PDF -->
+        <div class="main-content" id="conteudo-kit">
+            <div class="header">
+                <h1>O QUE VOCÊ LEVA JUNTO COM NOSSO KIT <span id="titulo-kit">START 1</span></h1>
+                <p>IERPEN Química Verde S01402>PIsopoint</p>
+                <ul>
+                    <li>Treinamento teórico para equipe (1 hora)</li>
+                    <li>Demonstração na prática de diluição e uso de todos os produtos (1 hora)</li>
+                    <li>04 pulverizadores + 4 Gatilhos + 2 bb virgem 5 litros (material necessário para diluição e aplicação dos produtos)</li>
+                </ul>
+                
+                <div class="guarantee">
+                    <strong>GARANTIMOS</strong>
+                    <div class="icons">
+                        <span>✓ Redução de custos</span>
+                        <span>✓ Sustentabilidade</span>
+                        <span>✓ Melhoria dos processos de limpeza e higienização</span>
+                    </div>
+                </div>
+            </div>
+
+            <table id="tabela-produtos">
+                <thead>
+                    <tr>
+                        <th>Quantidade</th>
+                        <th>Imagem</th>
+                        <th>Descrição</th>
+                        <th>Diluições</th>
+                        <th>Custo (p/ litro) Operacional</th>
+                        <th>Valor</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="corpo-tabela">
+                    <!-- Produtos serão inseridos aqui -->
+                </tbody>
+            </table>
+
+            <div class="total">
+                TOTAL GERAL R$ <span id="valor-total">0,00</span>
+            </div>
+
+            <div class="enzilimp-section">
+                <p><strong>IBD</strong> - Agência Nacional de Vigilância Sanitária IBAMA INSUMO rcuhuro MMA</p>
+                <h3>ENZILIMP</h3>
+                <p>Segurança ao meio ambiente.</p>
+                
+                <h4>Por que utilizar as soluções Enzilimp?</h4>
+                <p>Enzilimp elimina os restos de matéria orgânica e gordura que poluem o ambiente natural. Seus microrganismos digerem esses detritos transformando-os em água e energia, eliminando o mau cheiro na fonte e afastando insetos nocivos. O uso adequado das soluções Enzilimp é um importante fator de bem-estar e saúde para as populações envolvidas, tendo efeitos notáveis na higienização profunda de residências, condomínios, shoppings, hotéis, restaurantes, indústrias alimentícias e demais estabelecimentos do gênero. Em larga escala, Enzilimp tem uma ação decisiva no saneamento básico das regiões urbanas, tratando, com notável eficácia, instalações de esgotos, lagoas de estabilização e efluentes industriais.</p>
+            </div>
+        </div>
+
+        <!-- Modal: Adicionar Novo Produto -->
+        <div id="modal-novo-produto" class="modal">
+            <div class="modal-content">
+                <h2>Adicionar Novo Produto</h2>
+                <form onsubmit="adicionarNovoProduto(event)">
+                    <div class="form-group">
+                        <label>Nome:</label>
+                        <input type="text" id="nome-produto" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição:</label>
+                        <textarea id="descricao-produto" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Diluições:</label>
+                        <input type="text" id="diluicoes-produto" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Custo por Litro (R$):</label>
+                        <input type="number" id="custo-litro" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Preço de Venda (R$):</label>
+                        <input type="number" id="preco-produto" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>URL da Imagem:</label>
+                        <input type="text" id="imagem-produto" placeholder="https://exemplo.com/imagem.jpg">
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit">Adicionar</button>
+                        <button type="button" onclick="fecharModal('modal-novo-produto')">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal: Remover Produto do Kit -->
+        <div id="modal-remover-produto" class="modal">
+            <div class="modal-content">
+                <h2>Remover Produto do Kit</h2>
+                <p>Selecione o produto que deseja remover:</p>
+                <div id="lista-produtos-kit"></div>
+                <div class="modal-buttons">
+                    <button onclick="fecharModal('modal-remover-produto')">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal: Confirmar Remoção de Kit Salvo -->
+        <div id="modal-remover-kit" class="modal">
+            <div class="modal-content">
+                <h2>Remover Kit Salvo</h2>
+                <p>Tem certeza que deseja remover este kit?</p>
+                <p><strong id="kit-para-remover"></strong></p>
+                <div class="modal-buttons">
+                    <button onclick="confirmarRemocaoKit()" style="background: #dc3545;">Sim, Remover</button>
+                    <button onclick="fecharModal('modal-remover-kit')">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
